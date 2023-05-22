@@ -1,4 +1,4 @@
-package com.usv.technotronus.features.certificate;
+package com.usv.technotronus.features.academic_year;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,23 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "certificate")
+@Table(name = "academic_year")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Certificate {
+public class AcademicYear {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer number;
+    private String currentAcademicYear;
 
-    private LocalDate releaseDate;
-
-    private String facultyAcronym;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

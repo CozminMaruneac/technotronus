@@ -41,4 +41,12 @@ CREATE TABLE certificate_request
     is_approved boolean,
     PRIMARY KEY (id),
     foreign key (user_id) references account (id)
-)
+);
+
+CREATE TABLE academic_year
+(
+    id                    integer generated always as identity,
+    current_academic_year varchar,
+    status                varchar,
+    primary key (id)
+);
