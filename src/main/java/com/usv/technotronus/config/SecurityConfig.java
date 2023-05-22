@@ -2,7 +2,6 @@ package com.usv.technotronus.config;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,12 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .csrf()
             .disable()
-            .authorizeRequests().antMatchers("/login").permitAll()
+            .authorizeRequests().antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .oauth2Login()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService)
+            .userInfoEndpoint()
+            .userService(customOAuth2UserService)
             .and()
             .successHandler(authenticationSuccessHandler)
             .and()
@@ -47,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**");
+            "/webjars/**",
+            "/v3/api-docs");
     }
 }
