@@ -1,5 +1,6 @@
 package com.usv.technotronus.config;
 
+import com.usv.technotronus.features.user.User;
 import com.usv.technotronus.features.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
-        userService.processUser(oauthUser.getEmail(),
+        User user = userService.processUser(oauthUser.getEmail(),
             (String) oauthUser.getAttributes().get("given_name"),
             (String) oauthUser.getAttributes().get("family_name"),
             (String) oauthUser.getAttributes().get("picture"));
 
-        response.sendRedirect("/user");
+        response.sendRedirect("http://localhost:8080/users");
     }
 }

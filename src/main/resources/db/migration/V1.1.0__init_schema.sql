@@ -27,10 +27,14 @@ CREATE TABLE certificate
 CREATE TABLE faculty
 (
 
-    id      integer generated always as identity,
-    acronym varchar,
-    name    varchar,
-    PRIMARY KEY (id)
+    id                 integer generated always as identity,
+    acronym            varchar,
+    name               varchar,
+    dean_id            uuid,
+    chief_secretary_id uuid,
+    PRIMARY KEY (id),
+    FOREIGN KEY (dean_id) REFERENCES account (id),
+    FOREIGN KEY (chief_secretary_id) references account (id)
 );
 
 CREATE TABLE certificate_request
@@ -49,4 +53,15 @@ CREATE TABLE academic_year
     current_academic_year varchar,
     status                varchar,
     primary key (id)
+);
+
+CREATE TABLE domain
+(
+    id integer generated always as identity
+);
+
+CREATE TABLE study_program
+(
+    id integer generated always as identity
+
 );

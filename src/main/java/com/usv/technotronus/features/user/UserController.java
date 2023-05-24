@@ -24,4 +24,10 @@ public class UserController {
         return userService.getById(userId);
 
     }
+
+    @GetMapping("")
+    public UserDto getCurrentUser(){
+
+        return userService.getCurrentUser();
+    }
 }
