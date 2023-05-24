@@ -28,6 +28,7 @@ public class UserService {
                     .firstName(givenName)
                     .lastName(familyName)
                     .profileImageUrl(picture)
+                    .role(UserRole.USER)
                     .build();
 
                 userRepository.save(user);
