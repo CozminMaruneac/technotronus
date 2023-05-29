@@ -1,5 +1,7 @@
 package com.usv.technotronus.features.user;
 
+import com.usv.technotronus.features.domain.Domain;
+import com.usv.technotronus.features.study_program.StudyProgram;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -36,14 +37,16 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    private String signature;
+    @ManyToOne
+    @JoinColumn(name = "domain_id")
+    private Domain domain;
 
-    private LocalDate dateOfBirth;
+    @ManyToOne
+    @JoinColumn(name = "study_program_id")
+    private StudyProgram studyProgram;
 
-    private String personalIdentificationNumber;
+    private Integer studyYear;
 
-    private String address;
-
-    private String phoneNumber;
-
+    @Enumerated(EnumType.STRING)
+    private FinancialStatus financialStatus;
 }

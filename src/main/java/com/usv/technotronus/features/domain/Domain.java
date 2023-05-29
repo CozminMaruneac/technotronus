@@ -15,8 +15,10 @@ import javax.persistence.*;
 @Builder
 public class Domain {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String name;
+
 }

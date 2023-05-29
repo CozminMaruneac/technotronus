@@ -1,5 +1,6 @@
 package com.usv.technotronus.features.study_program;
 
+import com.usv.technotronus.features.domain.Domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,10 @@ public class StudyProgram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String name;
+
+    private String description;
+
+    private String acronym;
 }

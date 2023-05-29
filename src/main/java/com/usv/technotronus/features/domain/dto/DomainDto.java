@@ -1,4 +1,4 @@
-package com.usv.technotronus.features.faculty.dto;
+package com.usv.technotronus.features.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class FacultyDto {
+public class DomainDto {
     private Integer id;
-    private String acronym;
     private String name;
 
 }
