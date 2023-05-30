@@ -42,9 +42,9 @@ public class UserController {
         pdfGeneratorService.generatePdf("Cosmin", 2023, "program", "de aia", 42, LocalDate.now(), "Test", "Test", "IF", "fara taxa");
     }
 
-    @PostMapping("/import-users")
-    public void importUser(@RequestPart MultipartFile studenti){
+    @PostMapping("/import")
+    public void importUser(@RequestPart MultipartFile students){
 
-        userImporter.importUsersFromExcel(studenti);
+        userImporter.importUsersFromExcel(students);
     }
 }
