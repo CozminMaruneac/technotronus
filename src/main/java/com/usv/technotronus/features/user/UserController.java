@@ -3,6 +3,7 @@ package com.usv.technotronus.features.user;
 import com.usv.technotronus.features.pdf_generator.PdfGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,9 +42,9 @@ public class UserController {
         pdfGeneratorService.generatePdf("Cosmin", 2023, "program", "de aia", 42, LocalDate.now(), "Test", "Test", "IF", "fara taxa");
     }
 
-    @PostMapping("/importUsers")
-    public void importUser(){
+    @PostMapping("/import-users")
+    public void importUser(@RequestPart MultipartFile studenti){
 
-        userImporter.importUsersFromExcel();
+        userImporter.importUsersFromExcel(studenti);
     }
 }

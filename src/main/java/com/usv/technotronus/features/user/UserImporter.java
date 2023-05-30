@@ -5,9 +5,9 @@ import com.usv.technotronus.features.study_program.StudyProgramRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,13 +20,11 @@ public class UserImporter {
     private final DomainRepository domainRepository;
     private final UserRepository userRepository;
 
-    public List<User> importUsersFromExcel( ) {
-
-        String filePath = "src/main/resources/generated/Book1.xlsx";
+    public List<User> importUsersFromExcel(MultipartFile multipartFile) {
         List<User> users = new ArrayList<>();
 
-        try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = WorkbookFactory.create(fis)) {
+        try (InputStream inputStream = multipartFile.getInputStream();
+             Workbook workbook = WorkbookFactory.create(inputStream)) {
 
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
@@ -62,12 +60,14 @@ public class UserImporter {
                     .fatherInitial(fatherInitial)
                     .domain(domainRepository.findByName(studyDomain))
                     .studyYear(studyYear)
-                    .financialStatus(FinancialStatus.getByStatusName(financialStatus)).build();
+                    .financialStatus(FinancialStatus.getByStatusName(financialStatus))
+                    .build();
                 users.add(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         userRepository.saveAll(users);
         return users;
     }
