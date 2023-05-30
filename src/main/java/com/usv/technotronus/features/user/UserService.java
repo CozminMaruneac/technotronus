@@ -65,4 +65,11 @@ public class UserService {
         return modelMapper.map(user.get(),UserDto.class);
 
     }
+
+    public List<UserDto> getUsers() {
+
+        return userRepository.findAll().stream()
+            .map(user -> modelMapper.map(user, UserDto.class))
+            .toList();
+    }
 }

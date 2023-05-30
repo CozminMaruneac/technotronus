@@ -30,20 +30,25 @@ public class UserController {
 
     }
 
-    @GetMapping("")
-    public UserDto getCurrentUser(){
-
+    @GetMapping("/current")
+    public UserDto getCurrentUser() {
         return userService.getCurrentUser();
     }
 
+    @GetMapping("")
+    public List<UserDto> getUsers() {
+
+        return userService.getUsers();
+    }
+
     @PostMapping("/generatePdf")
-    public void generatePdf(){
+    public void generatePdf() {
 
         pdfGeneratorService.generatePdf("Cosmin", 2023, "program", "de aia", 42, LocalDate.now(), "Test", "Test", "IF", "fara taxa");
     }
 
     @PostMapping("/import")
-    public void importUser(@RequestPart MultipartFile students){
+    public void importUser(@RequestPart MultipartFile students) {
 
         userImporter.importUsersFromExcel(students);
     }

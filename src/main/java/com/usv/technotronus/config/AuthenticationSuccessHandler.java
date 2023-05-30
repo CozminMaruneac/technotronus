@@ -30,6 +30,6 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             (String) oauthUser.getAttributes().get("family_name"),
             (String) oauthUser.getAttributes().get("picture"));
 
-        response.sendRedirect("http://localhost:8080/users");
+        response.sendRedirect("http://localhost:3000");
     }
 }
