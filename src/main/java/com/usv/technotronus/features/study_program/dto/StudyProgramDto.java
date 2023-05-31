@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,4 +21,7 @@ public class StudyProgramDto {
 
     private String acronym;
 
+    private UUID secretaryId;
+
+    private String secretaryName;
 }

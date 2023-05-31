@@ -21,4 +21,6 @@ public class Domain {
 
     private String name;
 
+    private String academicYear;
+
 }

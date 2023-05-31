@@ -1,8 +1,10 @@
 package com.usv.technotronus.features.domain;
 
-import com.usv.technotronus.features.exceptions.BadRequestException;
+import com.usv.technotronus.features.academic_year.AcademicYearRepository;
+import com.usv.technotronus.features.academic_year.Status;
 import com.usv.technotronus.features.domain.dto.CreateDomainDto;
 import com.usv.technotronus.features.domain.dto.DomainDto;
+import com.usv.technotronus.features.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ public class DomainService {
 
     private final ModelMapper modelMapper;
     private final DomainRepository repository;
-
+    private final AcademicYearRepository academicYearRepository;
 
     public List<DomainDto> getAllDomains() {
         List<Domain> faculties = repository.findAll();
@@ -33,6 +35,7 @@ public class DomainService {
     public DomainDto createDomain(CreateDomainDto createDomainDto) {
         Domain domain = new Domain();
         domain.setName(createDomainDto.getName());
+        domain.setAcademicYear(academicYearRepository.findFirstByStatus(Status.CURRENT).get().getCurrentAcademicYear());
 
         Domain savedDomain = repository.save(domain);
 

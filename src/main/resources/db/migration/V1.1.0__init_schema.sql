@@ -1,8 +1,9 @@
 CREATE TABLE domain
 (
 
-    id   integer generated always as identity,
-    name varchar,
+    id            integer generated always as identity,
+    name          varchar,
+    academic_year varchar,
     PRIMARY KEY (id)
 );
 

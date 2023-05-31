@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class DomainDto {
     private Integer id;
     private String name;
+    private String academicYear;
 
 }
