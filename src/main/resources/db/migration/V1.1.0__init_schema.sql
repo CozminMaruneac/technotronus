@@ -8,10 +8,11 @@ CREATE TABLE domain
 
 CREATE TABLE study_program
 (
-    id          integer generated always as identity,
-    acronym     varchar,
-    name        varchar,
-    description varchar,
+    id           integer generated always as identity,
+    acronym      varchar,
+    name         varchar,
+    description  varchar,
+    secretary_id uuid,
     primary key (id)
 );
 
@@ -34,33 +35,27 @@ CREATE TABLE account
     FOREIGN KEY (domain_id) REFERENCES domain (id)
 );
 
-CREATE TABLE certificate
-(
-    id              integer generated always as identity,
-    number          integer,
-    release_date    date,
-    faculty_acronym varchar,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE academic_year
 (
     id                    integer generated always as identity,
     current_academic_year varchar,
     status                varchar,
-    dean_id               uuid,
-    chief_secretary_id    uuid,
-    primary key (id),
-    FOREIGN KEY (dean_id) REFERENCES account (id),
-    FOREIGN KEY (chief_secretary_id) references account (id)
+    faculty_name          varchar,
+    faculty_acronym       varchar,
+    dean_name             varchar,
+    chief_secretary_name  varchar,
+    primary key (id)
 );
 
 CREATE TABLE certificate_request
 (
-    id          integer generated always as identity,
-    user_id     uuid,
-    reason      varchar,
-    is_approved boolean,
+    id             integer generated always as identity,
+    user_id        uuid,
+    reason         varchar,
+    status         varchar,
+    secretary_id   uuid,
+    requested_date date,
     PRIMARY KEY (id),
-    foreign key (user_id) references account (id)
+    foreign key (user_id) references account (id),
+    FOREIGN KEY (secretary_id) REFERENCES account (id)
 );

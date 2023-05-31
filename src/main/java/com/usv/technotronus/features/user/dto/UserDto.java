@@ -1,13 +1,12 @@
-package com.usv.technotronus.features.user;
+package com.usv.technotronus.features.user.dto;
 
+import com.usv.technotronus.features.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDate;
 import java.util.UUID;
 

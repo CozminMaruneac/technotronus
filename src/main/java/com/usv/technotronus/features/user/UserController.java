@@ -1,11 +1,11 @@
 package com.usv.technotronus.features.user;
 
-import com.usv.technotronus.features.pdf_generator.PdfGeneratorService;
+import com.usv.technotronus.features.user.dto.UserDto;
+import com.usv.technotronus.features.user.dto.UserViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,14 +15,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final PdfGeneratorService pdfGeneratorService;
     private final UserImporter userImporter;
-
-    @PostMapping("/bulk")
-    public List<UserDto> createUsers(@RequestBody List<UserDto> users) {
-        return userService.createUsersBulk(users);
-
-    }
 
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable(name = "id") UUID userId) {
@@ -35,16 +28,10 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
-    @GetMapping("")
-    public List<UserDto> getUsers() {
+    @GetMapping("/domain/{domainId}")
+    public List<UserViewDto> getUsersByDomain(@PathVariable Integer domainId) {
 
-        return userService.getUsers();
-    }
-
-    @PostMapping("/generatePdf")
-    public void generatePdf() {
-
-        pdfGeneratorService.generatePdf("Cosmin", 2023, "program", "de aia", 42, LocalDate.now(), "Test", "Test", "IF", "fara taxa");
+        return userService.getUsersByDomain(domainId);
     }
 
     @PostMapping("/import")

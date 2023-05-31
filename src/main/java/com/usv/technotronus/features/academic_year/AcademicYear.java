@@ -1,6 +1,5 @@
 package com.usv.technotronus.features.academic_year;
 
-import com.usv.technotronus.features.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,14 +21,14 @@ public class AcademicYear {
 
     private String currentAcademicYear;
 
-    @ManyToOne
-    @JoinColumn(name = "dean_id")
-    private User dean;
+    private String deanName;
 
-    @ManyToOne
-    @JoinColumn(name = "chief_secretary_id")
-    private User chiefSecretary;
+    private String chiefSecretaryName;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private String facultyName;
+
+    private String facultyAcronym;
 }

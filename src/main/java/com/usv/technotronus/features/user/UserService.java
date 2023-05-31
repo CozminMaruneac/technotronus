@@ -1,10 +1,13 @@
 package com.usv.technotronus.features.user;
 
 import com.usv.technotronus.features.exceptions.BadRequestException;
+import com.usv.technotronus.features.user.dto.UserDto;
+import com.usv.technotronus.features.user.dto.UserViewDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +21,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+
+    @PostConstruct
+    public void postConstruct() {
+        modelMapper.addMappings(Utils.userUserViewDtoPropertyMap);
+    }
+
 
     public User processUser(String email, String givenName, String familyName, String picture) {
 
@@ -36,40 +45,26 @@ public class UserService {
             });
     }
 
-    public List<UserDto> createUsersBulk(List<UserDto> users) {
-
-        List<User> mappedUsers = users.stream()
-            .map(userDto -> modelMapper.map(userDto, User.class))
-            .toList();
-
-        userRepository.saveAll(mappedUsers);
-
-        return mappedUsers.stream()
-            .map(user -> modelMapper.map(user, UserDto.class))
-            .toList();
-
-    }
-
     public UserDto getById(UUID userId) {
 
         return userRepository.findById(userId)
-            .map(user -> modelMapper.map(user,UserDto.class))
+            .map(user -> modelMapper.map(user, UserDto.class))
             .orElseThrow(EntityNotFoundException::new);
     }
 
     public UserDto getCurrentUser() {
         Optional<User> user = userRepository.findUserByEmailContainsIgnoreCase(getLoggedUserEmail());
-        if(!user.isPresent()){
+        if (!user.isPresent()) {
             throw new BadRequestException();
         }
-        return modelMapper.map(user.get(),UserDto.class);
+        return modelMapper.map(user.get(), UserDto.class);
 
     }
 
-    public List<UserDto> getUsers() {
+    public List<UserViewDto> getUsersByDomain(Integer domainId) {
 
-        return userRepository.findAll().stream()
-            .map(user -> modelMapper.map(user, UserDto.class))
+        return userRepository.findUserByDomainId(domainId).stream()
+            .map(student -> modelMapper.map(student, UserViewDto.class))
             .toList();
     }
 }

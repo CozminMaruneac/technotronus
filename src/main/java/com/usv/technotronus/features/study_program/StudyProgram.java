@@ -1,6 +1,6 @@
 package com.usv.technotronus.features.study_program;
 
-import com.usv.technotronus.features.domain.Domain;
+import com.usv.technotronus.features.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +25,8 @@ public class StudyProgram {
     private String description;
 
     private String acronym;
+
+    @ManyToOne
+    @JoinColumn(name = "secretary_id")
+    private User secretary;
 }
