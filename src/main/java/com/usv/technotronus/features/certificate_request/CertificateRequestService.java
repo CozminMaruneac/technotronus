@@ -1,9 +1,13 @@
 package com.usv.technotronus.features.certificate_request;
 
+import com.usv.technotronus.features.academic_year.AcademicYearService;
 import com.usv.technotronus.features.certificate_request.dto.CertificateRequestBySecretaryDto;
 import com.usv.technotronus.features.certificate_request.dto.CreateCertificateRequestDto;
 import com.usv.technotronus.features.certificate_request.dto.StudentCertificateRequestViewDto;
 import com.usv.technotronus.features.exceptions.BadRequestException;
+import com.usv.technotronus.features.generated_certificate.GeneratedCertificateDto;
+import com.usv.technotronus.features.generated_certificate.GeneratedCertificateService;
+import com.usv.technotronus.features.pdf_generator.PdfGeneratorService;
 import com.usv.technotronus.features.user.User;
 import com.usv.technotronus.features.user.UserRepository;
 import com.usv.technotronus.utilities.EmailService;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +31,9 @@ public class CertificateRequestService {
     private final CertificateRequestRepository repository;
     private final EmailService emailService;
     private final UserRepository userRepository;
+    private final PdfGeneratorService pdfGeneratorService;
+    private final AcademicYearService academicYearService;
+    private final GeneratedCertificateService generatedCertificateService;
 
     @PostConstruct
     public void postConstruct() {
@@ -82,5 +90,46 @@ public class CertificateRequestService {
 
         return repository.findAllByUserId(studentId).stream()
             .map(cr -> modelMapper.map(cr, StudentCertificateRequestViewDto.class)).toList();
+    }
+
+    public String generateCertificatePdf(Integer certificateRequestId) {
+
+        Optional<CertificateRequest> byId = repository.findById(certificateRequestId);
+
+        if (byId.isEmpty()) {
+            throw new BadRequestException();
+        }
+
+        CertificateRequest certificateRequest = byId.get();
+
+
+        if (!Status.APPROVED.equals(certificateRequest.getStatus())) {
+            throw new BadRequestException();
+        }
+
+        String pdfUrl = pdfGeneratorService.generatePdf(certificateRequest.getUser().getFullName(),
+            certificateRequest.getUser().getStudyYear(),
+            certificateRequest.getUser().getStudyProgram().getName(),
+            certificateRequest.getReason(),
+            42,
+            LocalDate.now(),
+            academicYearService.getCurrentAcademicYear().getCurrentAcademicYear(),
+            certificateRequest.getUser().getDomain().getName(),
+            certificateRequest.getUser().getFinancialStatus());
+
+        GeneratedCertificateDto dto = GeneratedCertificateDto.builder()
+            .reason(certificateRequest.getReason())
+            .fieldOfStudy(certificateRequest.getUser().getDomain().getName() + " " + certificateRequest.getUser().getStudyProgram().getName())
+            .financialStatus(certificateRequest.getUser().getFinancialStatus().name())
+            .registrationDate(LocalDate.now())
+            .studentFirstName(certificateRequest.getUser().getFirstName())
+            .studentLastName(certificateRequest.getUser().getLastName())
+            .yearOfStudy(certificateRequest.getUser().getStudyYear().toString())
+            .registrationNumber("42")
+            .build();
+
+        generatedCertificateService.create(dto);
+
+        return pdfUrl;
     }
 }

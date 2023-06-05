@@ -49,4 +49,9 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private FinancialStatus financialStatus;
+
+    public String getFullName(){
+
+        return this.lastName + " " + this.fatherInitial + " " + this.firstName;
+    }
 }

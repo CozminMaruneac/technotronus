@@ -4,13 +4,11 @@ import com.usv.technotronus.features.certificate_request.dto.CertificateRequestA
 import com.usv.technotronus.features.certificate_request.dto.CertificateRequestBySecretaryDto;
 import com.usv.technotronus.features.certificate_request.dto.CreateCertificateRequestDto;
 import com.usv.technotronus.features.certificate_request.dto.StudentCertificateRequestViewDto;
-import com.usv.technotronus.features.pdf_generator.PdfGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +18,6 @@ import java.util.UUID;
 public class CertificateRequestController {
 
     private final CertificateRequestService service;
-    private final PdfGeneratorService pdfGeneratorService;
 
     @PostMapping
     public ResponseEntity<CreateCertificateRequestDto> createCertificateRequest(@RequestBody CreateCertificateRequestDto request) {
@@ -61,14 +58,6 @@ public class CertificateRequestController {
     @PostMapping("/generate-certificate/{certificateRequestId}")
     public void generateCertificate(@PathVariable(name = "certificateRequestId") Integer certificateRequestId) {
 
-        pdfGeneratorService.generatePdf("Cosmin",
-            2023,
-            "program",
-            "de aia",
-            42, LocalDate.now(),
-            "Test",
-            "Test",
-            "IF",
-            "fara taxa");
+        service.generateCertificatePdf(certificateRequestId);
     }
 }

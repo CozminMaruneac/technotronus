@@ -60,3 +60,18 @@ CREATE TABLE certificate_request
     foreign key (user_id) references account (id),
     FOREIGN KEY (secretary_id) REFERENCES account (id)
 );
+
+CREATE TABLE generated_certificate
+(
+
+    id                  integer generated always as identity,
+    registration_number varchar,
+    registration_date   date,
+    student_last_name   varchar,
+    student_first_name  varchar,
+    field_of_study      varchar,
+    year_of_study       varchar,
+    financial_status    varchar,
+    reason              varchar,
+    PRIMARY KEY (id)
+);

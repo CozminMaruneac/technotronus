@@ -1,22 +1,23 @@
 package com.usv.technotronus.features.pdf_generator;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.usv.technotronus.features.user.FinancialStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class PdfGeneratorService {
 
-    public void generatePdf(String studentName, int year, String program, String reason, int number, LocalDate date, String currentAcademicYear, String domain, String learningForm, String style) {
+    public String generatePdf(String studentName, int year, String studyProgram, String reason, int number, LocalDate date, String currentAcademicYear, String domain, FinancialStatus style) {
         Document document = new Document();
         try {
-            String filePath = "src/main/resources/generated/file.pdf";
+            String filePath = "src/main/resources/generated/" + UUID.randomUUID() + ".pdf";
 
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
@@ -41,36 +42,18 @@ public class PdfGeneratorService {
 
             // Student information
             Paragraph studentInfo = new Paragraph();
-            studentInfo.add(new Phrase("Studentul(a)" + studentName + " este inscris(a) \n in anul universitar " + currentAcademicYear + " in anul " + year + " de studii, program/domeniu de studii - "
-                 + domain + ":\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+            studentInfo.add(new Phrase("Studentul(a)" + studentName + " este inscris(a) in anul universitar " + currentAcademicYear + " in anul " + year + " de studii, program/domeniu de studii - "
+                + domain + ":\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
             document.add(studentInfo);
 
-            // Checkboxes
-            PdfPTable checkboxTable = new PdfPTable(1);
-            checkboxTable.setWidthPercentage(100);
-            checkboxTable.setSpacingBefore(10);
-            checkboxTable.setSpacingAfter(10);
-
-            String[] checkboxLabels = {
-                "Checkbox 1",
-                "Checkbox 2",
-                "Checkbox 3"
-            };
-
-            for (String label : checkboxLabels) {
-                PdfPCell cell = new PdfPCell();
-                cell.setBorderWidth(0);
-                cell.setPadding(5);
-                cell.addElement(new Phrase("\u2610 " + label, FontFactory.getFont(FontFactory.HELVETICA, 12))); // Empty checkbox symbol
-                checkboxTable.addCell(cell);
-            }
-
-            document.add(checkboxTable);
+            Paragraph studProgram = new Paragraph();
+            studProgram.add(new Phrase("     " + studyProgram + "\n"));
+            document.add(studProgram);
 
             // Reason
             Paragraph serveLine = new Paragraph();
-            serveLine.add(new Phrase("forma de invatamant " + learningForm + ", regimul cu " + style + "\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
-            serveLine.add(new Phrase("Adeverinta se elibereaza pentru a-i servi la:\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+            serveLine.add(new Phrase("forma de invatamant IF, regimul " + getFinancialStatusString(style) + "\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+            serveLine.add(new Phrase("Adeverinta se elibereaza pentru a-i servi la: " + reason + "\n\n", FontFactory.getFont(FontFactory.HELVETICA, 12)));
             document.add(serveLine);
 
             // Names
@@ -96,8 +79,16 @@ public class PdfGeneratorService {
 
             document.close();
             System.out.println("PDF generated successfully at: " + filePath);
+            return filePath;
         } catch (Exception e) {
             System.err.println("Error generating PDF: " + e.getMessage());
         }
+
+        return "";
+    }
+
+    private String getFinancialStatusString(FinancialStatus style) {
+
+        return style.equals(FinancialStatus.TAX) ? "cu taxa " : "fara taxa ";
     }
 }
