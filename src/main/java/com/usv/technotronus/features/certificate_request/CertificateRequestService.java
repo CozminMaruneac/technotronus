@@ -6,6 +6,7 @@ import com.usv.technotronus.features.certificate_request.dto.StudentCertificateR
 import com.usv.technotronus.features.exceptions.BadRequestException;
 import com.usv.technotronus.features.user.User;
 import com.usv.technotronus.features.user.UserRepository;
+import com.usv.technotronus.utilities.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class CertificateRequestService {
     private final ModelMapper modelMapper;
 
     private final CertificateRequestRepository repository;
+    private final EmailService emailService;
     private final UserRepository userRepository;
 
     @PostConstruct
@@ -59,6 +61,11 @@ public class CertificateRequestService {
         return repository.findById(id)
             .map(certificateRequest -> {
                 certificateRequest.setStatus(status);
+//                if(Status.APPROVED.equals(status)){
+//                    emailService.sendEmail("cosmin.maruneac@student.usv.ro",
+//                        "Cererea ta a fost aprobata",
+//                        "Felicitari!");
+//                }
                 repository.save(certificateRequest);
                 return modelMapper.map(certificateRequest, CertificateRequestBySecretaryDto.class);
             })
