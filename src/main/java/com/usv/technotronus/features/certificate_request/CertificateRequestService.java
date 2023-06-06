@@ -2,6 +2,7 @@ package com.usv.technotronus.features.certificate_request;
 
 import com.usv.technotronus.features.academic_year.AcademicYearService;
 import com.usv.technotronus.features.certificate_request.dto.CertificateRequestBySecretaryDto;
+import com.usv.technotronus.features.certificate_request.dto.CertificateRequestReportDto;
 import com.usv.technotronus.features.certificate_request.dto.CreateCertificateRequestDto;
 import com.usv.technotronus.features.certificate_request.dto.StudentCertificateRequestViewDto;
 import com.usv.technotronus.features.exceptions.BadRequestException;
@@ -131,5 +132,17 @@ public class CertificateRequestService {
         generatedCertificateService.create(dto);
 
         return pdfUrl;
+    }
+
+    public CertificateRequestReportDto getStatusForCurrentMonth() {
+        Integer createdThisMonth = repository.countCreatedThisMonth();
+        Integer acceptedThisMonth = repository.countAcceptedThisMonth();
+        Integer refusedThisMonth = repository.countRefusedThisMonth();
+
+        return CertificateRequestReportDto.builder()
+            .createdThisMonth(createdThisMonth)
+            .acceptedThisMonth(acceptedThisMonth)
+            .refusedThisMonth(refusedThisMonth)
+            .build();
     }
 }

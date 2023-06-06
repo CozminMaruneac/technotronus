@@ -1,5 +1,6 @@
 package com.usv.technotronus.features.user;
 
+import com.usv.technotronus.features.user.dto.StudyProgramReportDto;
 import com.usv.technotronus.features.user.dto.UserDto;
 import com.usv.technotronus.features.user.dto.UserViewDto;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,10 @@ public class UserController {
     public void importUser(@RequestPart MultipartFile students) {
 
         userImporter.importUsersFromExcel(students);
+    }
+
+    @GetMapping("/report")
+    public StudyProgramReportDto getStudyProgramReportByDomain(@RequestParam Long domainId) {
+        return userService.getStudyProgramReportByDomain(domainId);
     }
 }

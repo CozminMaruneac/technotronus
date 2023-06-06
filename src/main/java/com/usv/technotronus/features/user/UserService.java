@@ -1,6 +1,8 @@
 package com.usv.technotronus.features.user;
 
 import com.usv.technotronus.features.exceptions.BadRequestException;
+import com.usv.technotronus.features.user.dto.StudyProgramReportDto;
+import com.usv.technotronus.features.user.dto.TotalStudentPerStudyProgramDto;
 import com.usv.technotronus.features.user.dto.UserDto;
 import com.usv.technotronus.features.user.dto.UserViewDto;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,4 +70,29 @@ public class UserService {
             .map(student -> modelMapper.map(student, UserViewDto.class))
             .toList();
     }
+
+
+    public StudyProgramReportDto getStudyProgramReportByDomain(Long domainId) {
+        StudyProgramReportDto reportDto = new StudyProgramReportDto();
+
+        List<TotalStudentPerStudyProgramResult> results = userRepository.getUserNumberPerStudyProgram(domainId);
+        reportDto.setStudentPerStudyProgram(convertToDto(results));
+
+        Integer totalStudents = userRepository.getTotalStudentsByDomain(domainId);
+        reportDto.setTotalStudents(totalStudents);
+
+        return reportDto;
+    }
+
+    public List<TotalStudentPerStudyProgramDto> convertToDto(List<TotalStudentPerStudyProgramResult> results) {
+        List<TotalStudentPerStudyProgramDto> dtos = new ArrayList<>();
+        for (TotalStudentPerStudyProgramResult result : results) {
+            TotalStudentPerStudyProgramDto dto = new TotalStudentPerStudyProgramDto();
+            dto.setStudyProgramName(result.getStudyProgramName());
+            dto.setStudentsNumber(result.getStudentsNumber());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
 }

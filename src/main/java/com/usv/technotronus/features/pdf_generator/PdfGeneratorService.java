@@ -7,6 +7,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.usv.technotronus.features.user.FinancialStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -79,7 +80,8 @@ public class PdfGeneratorService {
 
             document.close();
             System.out.println("PDF generated successfully at: " + filePath);
-            return filePath;
+            File file = new File(filePath);
+            return file.getAbsolutePath();
         } catch (Exception e) {
             System.err.println("Error generating PDF: " + e.getMessage());
         }

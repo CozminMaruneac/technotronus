@@ -1,9 +1,6 @@
 package com.usv.technotronus.features.certificate_request;
 
-import com.usv.technotronus.features.certificate_request.dto.CertificateRequestApprovalRequest;
-import com.usv.technotronus.features.certificate_request.dto.CertificateRequestBySecretaryDto;
-import com.usv.technotronus.features.certificate_request.dto.CreateCertificateRequestDto;
-import com.usv.technotronus.features.certificate_request.dto.StudentCertificateRequestViewDto;
+import com.usv.technotronus.features.certificate_request.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +53,13 @@ public class CertificateRequestController {
     }
 
     @PostMapping("/generate-certificate/{certificateRequestId}")
-    public void generateCertificate(@PathVariable(name = "certificateRequestId") Integer certificateRequestId) {
+    public String generateCertificate(@PathVariable(name = "certificateRequestId") Integer certificateRequestId) {
 
-        service.generateCertificatePdf(certificateRequestId);
+        return service.generateCertificatePdf(certificateRequestId);
+    }
+
+    @GetMapping("/reports")
+    public CertificateRequestReportDto getCertificateRequestsReport() {
+        return service.getStatusForCurrentMonth();
     }
 }

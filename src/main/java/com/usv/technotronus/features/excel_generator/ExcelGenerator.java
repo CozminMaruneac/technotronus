@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,8 +74,8 @@ public class ExcelGenerator {
                 workbook.write(fileOutputStream);
             }
 
-            return filePath;
-
+            File file = new File(filePath);
+            return file.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
