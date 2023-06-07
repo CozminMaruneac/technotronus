@@ -64,6 +64,25 @@ public class UserService {
 
     }
 
+    public List<UserDto> createSecretariesAccounts(List<UserDto> users) {
+
+        List<User> mappedUsers = users.stream()
+            .map(userDto -> {
+
+                User secretary = modelMapper.map(userDto, User.class);
+                secretary.setRole(UserRole.SECRETARY);
+                return secretary;
+            })
+            .toList();
+
+        userRepository.saveAll(mappedUsers);
+
+        return mappedUsers.stream()
+            .map(user -> modelMapper.map(user, UserDto.class))
+            .toList();
+
+    }
+
     public List<UserViewDto> getUsersByDomain(Integer domainId) {
 
         return userRepository.findUserByDomainId(domainId).stream()

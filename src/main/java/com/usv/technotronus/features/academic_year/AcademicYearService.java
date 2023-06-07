@@ -18,7 +18,7 @@ public class AcademicYearService {
 
     public AcademicYearDto create(AcademicYearDto academicYearDto) {
 
-        if (academicYearRepository.existsAcademicYearByStatus(Status.CURRENT)) {
+        if (Boolean.TRUE.equals(academicYearRepository.existsAcademicYearByStatus(Status.CURRENT))) {
             throw new BadRequestException("An existing academic year is going on now. You have to close the previous first!");
         }
         AcademicYear academicYear = modelMapper.map(academicYearDto, AcademicYear.class);

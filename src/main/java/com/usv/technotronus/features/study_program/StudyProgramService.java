@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +63,13 @@ public class StudyProgramService {
             throw new BadRequestException();
         }
         studyProgram.setSecretary(secretary.get());
+    }
+
+    public List<StudyProgramDto> getAll() {
+
+        return studyProgramRepository.findAll()
+            .stream()
+            .map(sp -> modelMapper.map(sp, StudyProgramDto.class))
+            .toList();
     }
 }

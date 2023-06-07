@@ -4,6 +4,8 @@ import com.usv.technotronus.features.study_program.dto.StudyProgramDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/study-programs")
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class StudyProgramController {
     public StudyProgramDto getById(@PathVariable Integer id) {
 
         return studyProgramService.getById(id);
+    }
+
+    @GetMapping("")
+    public List<StudyProgramDto> getAll() {
+
+        return studyProgramService.getAll();
     }
 
     @PutMapping

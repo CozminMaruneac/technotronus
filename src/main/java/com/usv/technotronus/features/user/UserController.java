@@ -18,6 +18,11 @@ public class UserController {
     private final UserService userService;
     private final UserImporter userImporter;
 
+    @PostMapping("/bulk")
+    public List<UserDto> createSecretariesAccounts(@RequestBody List<UserDto> users) {
+        return userService.createSecretariesAccounts(users);
+    }
+
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable(name = "id") UUID userId) {
         return userService.getById(userId);

@@ -20,6 +20,10 @@ public class AcademicYearDto {
 
     private String currentAcademicYear;
 
+    private String deanName;
+
+    private String chiefSecretaryName;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private Status status;
