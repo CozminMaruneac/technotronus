@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
         "FROM account s " +
         "WHERE s.domain_id = :domainId", nativeQuery = true)
     Integer getTotalStudentsByDomain(Long domainId);
+
+    List<User> findUsersByRole(UserRole role);
 }

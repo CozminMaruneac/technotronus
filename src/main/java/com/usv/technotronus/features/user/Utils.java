@@ -1,8 +1,11 @@
 package com.usv.technotronus.features.user;
 
+import com.usv.technotronus.features.user.dto.SecretaryDto;
 import com.usv.technotronus.features.user.dto.UserViewDto;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
+
+import java.util.Objects;
 
 public class Utils {
 
@@ -19,8 +22,17 @@ public class Utils {
 
 
     public static String generateFullName(User user) {
-        return user.getFirstName() + " " +  user.getFatherInitial() + " " + user.getLastName();
+        String fatherInitial = Objects.isNull(user.getFatherInitial()) ? "" : user.getFatherInitial() + " ";
+        return user.getFirstName() + " " + fatherInitial + user.getLastName();
     }
 
     static Converter<User, String> converter = ctx -> generateFullName(ctx.getSource());
+
+    public static final PropertyMap<User, SecretaryDto> secretaryDtoPropertyMap = new PropertyMap<>() {
+        @Override
+        protected void configure() {
+
+            using(converter).map(source, destination.getName());
+        }
+    };
 }

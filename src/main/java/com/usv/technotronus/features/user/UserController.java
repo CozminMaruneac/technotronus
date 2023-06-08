@@ -1,5 +1,6 @@
 package com.usv.technotronus.features.user;
 
+import com.usv.technotronus.features.user.dto.SecretaryDto;
 import com.usv.technotronus.features.user.dto.StudyProgramReportDto;
 import com.usv.technotronus.features.user.dto.UserDto;
 import com.usv.technotronus.features.user.dto.UserViewDto;
@@ -32,6 +33,11 @@ public class UserController {
     @GetMapping("/current")
     public UserDto getCurrentUser() {
         return userService.getCurrentUser();
+    }
+
+    @GetMapping("/secretaries")
+    public List<SecretaryDto> getSecretaries() {
+        return userService.getSecretaries();
     }
 
     @GetMapping("/domain/{domainId}")

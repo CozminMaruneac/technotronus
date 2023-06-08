@@ -1,10 +1,7 @@
 package com.usv.technotronus.features.user;
 
 import com.usv.technotronus.features.exceptions.BadRequestException;
-import com.usv.technotronus.features.user.dto.StudyProgramReportDto;
-import com.usv.technotronus.features.user.dto.TotalStudentPerStudyProgramDto;
-import com.usv.technotronus.features.user.dto.UserDto;
-import com.usv.technotronus.features.user.dto.UserViewDto;
+import com.usv.technotronus.features.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,7 @@ public class UserService {
     @PostConstruct
     public void postConstruct() {
         modelMapper.addMappings(Utils.userUserViewDtoPropertyMap);
+        modelMapper.addMappings(Utils.secretaryDtoPropertyMap);
     }
 
 
@@ -114,4 +112,11 @@ public class UserService {
         return dtos;
     }
 
+    public List<SecretaryDto> getSecretaries() {
+
+        return userRepository.findUsersByRole(UserRole.SECRETARY)
+            .stream()
+            .map(user -> modelMapper.map(user, SecretaryDto.class))
+            .toList();
+    }
 }
