@@ -5,6 +5,8 @@ import com.usv.technotronus.features.user.User;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 
+import java.util.Objects;
+
 public class Utils {
 
     public static final PropertyMap<StudyProgram, StudyProgramDto> studyProgramDtoPropertyMap = new PropertyMap<>() {
@@ -18,7 +20,8 @@ public class Utils {
 
 
     public static String generateFullName(User user) {
-        return user.getFirstName() + " " +  user.getFatherInitial() + " " + user.getLastName();
+        String fatherInitial = Objects.isNull(user.getFatherInitial()) ? "" : user.getFatherInitial() + " ";
+        return user.getFirstName() + " " + fatherInitial + user.getLastName();
     }
 
     static Converter<User, String> converter = ctx -> generateFullName(ctx.getSource());
