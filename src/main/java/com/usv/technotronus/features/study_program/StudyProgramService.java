@@ -27,6 +27,10 @@ public class StudyProgramService {
 
     public StudyProgramDto create(StudyProgramDto studyProgramDto) {
 
+        if (studyProgramRepository.existsByName(studyProgramDto.getName())) {
+            throw new BadRequestException("This study program already exists!");
+        }
+
         StudyProgram studyProgram = modelMapper.map(studyProgramDto, StudyProgram.class);
 
         setStudyProgramSecretary(studyProgramDto, studyProgram);

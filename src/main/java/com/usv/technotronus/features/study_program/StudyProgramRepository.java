@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StudyProgramRepository extends JpaRepository<StudyProgram, Integer> {
 
     StudyProgram findByName(String name);
+
+    Boolean existsByName(String name);
 }
