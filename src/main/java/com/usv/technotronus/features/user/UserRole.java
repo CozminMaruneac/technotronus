@@ -4,5 +4,5 @@ public enum UserRole {
 
     USER,
     SECRETARY,
-    DEAN
+    ADMIN
 }
