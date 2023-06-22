@@ -20,4 +20,7 @@ public interface CertificateRequestRepository extends JpaRepository<CertificateR
 
     @Query(value = "SELECT COUNT(*) FROM certificate_request WHERE EXTRACT(MONTH FROM requested_date) = EXTRACT(MONTH FROM CURRENT_DATE) AND status = 'REJECTED'", nativeQuery = true)
     Integer countRefusedThisMonth();
+
+    @Query(value = "SELECT max(request_number) FROM certificate_request WHERE EXTRACT(DAY FROM requested_date) = EXTRACT(DAY FROM CURRENT_DATE)", nativeQuery = true)
+    Integer getLastRequestNumber();
 }

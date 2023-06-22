@@ -29,4 +29,6 @@ public class StudyProgram {
     @ManyToOne
     @JoinColumn(name = "secretary_id")
     private User secretary;
+
+    private Integer registrationNumber;
 }

@@ -5,7 +5,9 @@ import com.usv.technotronus.features.study_program.dto.StudyProgramDto;
 import com.usv.technotronus.features.user.User;
 import com.usv.technotronus.features.user.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class StudyProgramService {
 
     private final ModelMapper modelMapper;
@@ -75,5 +78,36 @@ public class StudyProgramService {
             .stream()
             .map(sp -> modelMapper.map(sp, StudyProgramDto.class))
             .toList();
+    }
+
+    public Integer getRegistrationNumber(Integer id) {
+
+        return studyProgramRepository.findById(id)
+            .map(StudyProgram::getRegistrationNumber)
+            .orElseThrow(BadRequestException::new);
+    }
+
+    public Integer setRegistrationNumber(Integer id, Integer registrationNumber) {
+
+        return studyProgramRepository.findById(id)
+            .map(studyProgram -> {
+                studyProgram.setRegistrationNumber(registrationNumber);
+                studyProgramRepository.save(studyProgram);
+                return registrationNumber;
+            }).orElseThrow(BadRequestException::new);
+    }
+
+    @Scheduled(cron = "0 0 0 * * *") // Runs at midnight every day
+    public void removeRegistrationNumber() {
+
+        log.info("Removing registration numbers...");
+        List<StudyProgram> all = studyProgramRepository.findAll();
+        all.forEach(
+            studyProgram -> {
+                studyProgram.setRegistrationNumber(null);
+                studyProgramRepository.save(studyProgram);
+            }
+        );
+        log.info("Registration numbers successfully removed");
     }
 }

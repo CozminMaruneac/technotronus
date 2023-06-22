@@ -34,5 +34,6 @@ public class CertificateRequest {
     @JoinColumn(name = "secretary_id")
     private User secretary;
 
+    private Integer requestNumber;
     private LocalDate requestedDate;
 }

@@ -37,5 +37,15 @@ public class StudyProgramController {
         return studyProgramService.update(dto);
     }
 
+    @GetMapping("/registration-number/{id}")
+    public Integer getRegistrationNumber(@PathVariable Integer id){
+        return studyProgramService.getRegistrationNumber(id);
+    }
+
+    @PatchMapping("/registration-number/{id}")
+    public Integer setRegistrationNumber(@PathVariable Integer id,
+                                         @RequestParam Integer registrationNumber){
+        return studyProgramService.setRegistrationNumber(id,registrationNumber);
+    }
 
 }

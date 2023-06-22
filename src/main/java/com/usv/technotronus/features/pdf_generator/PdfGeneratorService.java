@@ -15,7 +15,18 @@ import java.util.UUID;
 @Service
 public class PdfGeneratorService {
 
-    public String generatePdf(String studentName, int year, String studyProgram, String reason, int number, LocalDate date, String currentAcademicYear, String domain, FinancialStatus style) {
+    public String generatePdf(String studentName,
+                              int year, String studyProgram,
+                              String reason,
+                              int number,
+                              LocalDate date,
+                              String currentAcademicYear,
+                              String domain,
+                              FinancialStatus style,
+                              Integer registrationNumber,
+                              String chiefSecretaryName,
+                              String deanName,
+                              String secretaryName) {
         Document document = new Document();
         try {
             String filePath = "src/main/resources/generated/" + UUID.randomUUID() + ".pdf";
@@ -32,7 +43,7 @@ public class PdfGeneratorService {
             // Number and FIESC line
             Paragraph numberLine = new Paragraph();
             numberLine.setAlignment(Element.ALIGN_RIGHT);
-            numberLine.add(new Phrase("Nr. " + number + " / FIESC/" + date + "\n\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            numberLine.add(new Phrase(registrationNumber + "/" + number + " /FIESC/" + date + "\n\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             document.add(numberLine);
 
             // Title
@@ -58,9 +69,9 @@ public class PdfGeneratorService {
             document.add(serveLine);
 
             // Names
-            PdfPTable namesTable = new PdfPTable(3);
-            namesTable.setWidthPercentage(100);
-            namesTable.setWidths(new int[]{1, 1, 1});
+            PdfPTable rolesTable = new PdfPTable(3);
+            rolesTable.setWidthPercentage(100);
+            rolesTable.setWidths(new int[]{1, 1, 1});
 
             String[] names = {
                 "D E C A N",
@@ -73,6 +84,25 @@ public class PdfGeneratorService {
                 cell.setBorderWidth(0);
                 cell.setPadding(5);
                 cell.addElement(new Phrase(name, FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                rolesTable.addCell(cell);
+            }
+
+            document.add(rolesTable);
+
+            PdfPTable namesTable = new PdfPTable(3);
+            namesTable.setWidthPercentage(100);
+            namesTable.setWidths(new int[]{1, 1, 1});
+            String[] signatureRequiredNames = {
+                deanName,
+                chiefSecretaryName,
+                secretaryName
+            };
+
+            for (String name : signatureRequiredNames) {
+                PdfPCell cell = new PdfPCell();
+                cell.setBorderWidth(0);
+                cell.setPadding(5);
+                cell.addElement(new Phrase(name, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12)));
                 namesTable.addCell(cell);
             }
 
